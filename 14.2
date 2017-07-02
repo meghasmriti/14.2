@@ -1,0 +1,36 @@
+create table if not exists temperature_data
+(
+date string
+unit string,
+zip int,
+temperature int
+)
+row format delimited
+fields terminated by ',';
+
+
+LOAD DATA 
+LOCAL INPATH '/home/acadgild/hive/emp_details.txt'
+INTO TABLE emp_details;
+
+
+1)
+
+SELECT date, temperature FROM temperature_data WHERE zip>300000 and zip<399999;
+
+
+2)
+  SELECT  year(date), MAX(temperature) FROM temperature_data GROUP BY year(date);
+
+3) 
+CREATE VIEW emp_view AS  temperature_data_vw
+
+SELECT  year(date), MAX(temperature) FROM temperature_data GROUP BY year(date);
+
+SELECT * FROM temperature_data_vw;
+
+4)
+INSERT OVERWRITE LOCAL DIRECTORY '/tmp/output'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '|'
+SELECT * FROM temperature_data_vw;
